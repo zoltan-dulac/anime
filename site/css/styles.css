@@ -101,9 +101,9 @@ body.ready .logo {
 	opacity: 1;
 }
 
-/*body:not(.iOS) #lines * {
+body:not(.iOS) #lines * {
   mix-blend-mode: lighten;
-}*/
+}
 
 #fills * {
   opacity: 0;
