@@ -66,15 +66,6 @@ Defines the elements or JS Objects to animate.
 
 Parameters can be set individually to properties using an Object.
 
-```javascript
-rotate: {
-	value: 180,
-	delay: 200,
-	duration: 1500,
-	easing: 'easeInOutQuad'
-}
-```
-
 Specific property parameters are :
 
 * value (required)
