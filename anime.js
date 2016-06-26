@@ -358,14 +358,14 @@ var anime = (function() {
     });
   }
 
-  var reverseTweens = function(anim) {
+  var reverseTweens = function(anim, delays) {
     anim.tweens.forEach(function(tween) {
       var toVal = tween.to;
       var fromVal = tween.from;
       var delayVal = anim.duration - (tween.delay + tween.duration);
       tween.from = toVal;
       tween.to = fromVal;
-      tween.delay = delayVal;
+      if (delays) tween.delay = delayVal;
     });
     anim.reversed = anim.reversed ? false : true;
   }
@@ -505,7 +505,7 @@ var anime = (function() {
         if (time.current >= anim.duration) {
           if (s.loop) {
             time.start = +new Date();
-            if (s.direction === 'alternate') reverseTweens(anim);
+            if (s.direction === 'alternate') reverseTweens(anim, true);
             if (is.number(s.loop)) s.loop--;
             time.raf = requestAnimationFrame(time.tick);
           } else {

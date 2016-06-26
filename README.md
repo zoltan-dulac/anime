@@ -1,6 +1,6 @@
 # anime.js
 *Anime* `(/ˈæn.ə.meɪ/)` is a polyvalent yet lightweight Javascript animation library.  
-It works with CSS, Individual Transforms, SVG, DOM attributes and Canvas.
+It works with CSS, Individual Transforms, SVG, DOM attributes and JS Objects.
 
 Examples and demos :
 
