@@ -253,4 +253,4 @@ var logoAnimation = function() {
 
 }
 
-document.addEventListener('DOMContentLoaded', logoAnimation, false);
+window.onload = logoAnimation;
