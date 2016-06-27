@@ -124,6 +124,7 @@ var fireworks = (function() {
   document.addEventListener(tap, function(e) {
     updateCoords(e);
     animateParticules(x, y);
+    ga('send', 'event', 'Fireworks', 'Click');
   }, false);
 
   window.addEventListener('resize', setCanvasSize, false);
