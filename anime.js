@@ -332,13 +332,13 @@
   var getTweenValues = function(prop, values, type, target) {
     var valid = {};
     if (type === 'transform') {
-    	if (target instanceof SVGElement) {
-    		valid.from = prop + '(' + values.from + ')';
-	      valid.to = prop + '(' + values.to + ')';
-    	} else {
-	      valid.from = prop + '(' + addDefaultTransformUnit(prop, values.from, values.to) + ')';
-	      valid.to = prop + '(' + addDefaultTransformUnit(prop, values.to) + ')';
-	    }
+      if (target instanceof SVGElement) {
+        valid.from = prop + '(' + values.from + ')';
+        valid.to = prop + '(' + values.to + ')';
+      } else {
+        valid.from = prop + '(' + addDefaultTransformUnit(prop, values.from, values.to) + ')';
+        valid.to = prop + '(' + addDefaultTransformUnit(prop, values.to) + ')';
+      }
     } else {
       var originalCSS = (type === 'css') ? getCSSValue(target, prop) : undefined;
       valid.from = getValidValue(values, values.from, originalCSS);
@@ -484,24 +484,24 @@
           case 'attribute': animatable.target.setAttribute(tween.name, progress); break;
           case 'object': animatable.target[tween.name] = progress; break;
           case 'transform':
-          	if (!transforms) transforms = {};
-	          if (!transforms[id]) transforms[id] = [];
-	          transforms[id].push(progress);
-	          break;
+            if (!transforms) transforms = {};
+            if (!transforms[id]) transforms[id] = [];
+            transforms[id].push(progress);
+            break;
         }
       });
     });
     if (transforms) {
-    	for (var t in transforms) {
-    		var target = anim.animatables[t].target,
-    			transformValue = transforms[t].join(' ');
-    		
-    		if (target instanceof SVGElement) {
-    			target.setAttribute('transform', transformValue)
-    		} else {
-    			target.style.transform = transformValue;
-    		}
-    	}
+      for (var t in transforms) {
+        var target = anim.animatables[t].target,
+          transformValue = transforms[t].join(' ');
+        
+        if (target instanceof SVGElement) {
+          target.setAttribute('transform', transformValue)
+        } else {
+          target.style.transform = transformValue;
+        }
+      }
     }
     if (anim.settings.update) anim.settings.update(anim);
   }
