@@ -332,6 +332,10 @@
   var getTweenValues = function(prop, values, type, target) {
     var valid = {};
     if (type === 'transform') {
+      /*
+       * The SVG transform attribute does not take units, so we 
+       * must test for this.
+       */
       if (target instanceof SVGElement) {
         valid.from = prop + '(' + values.from + ')';
         valid.to = prop + '(' + values.to + ')';
@@ -496,6 +500,10 @@
         var target = anim.animatables[t].target,
           transformValue = transforms[t].join(' ');
         
+        /*
+         * IE <= 10 has a problem with SVG and CSS transforms, so 
+         * we have to work around this.
+         */
         if (target instanceof SVGElement) {
           target.setAttribute('transform', transformValue)
         } else {
