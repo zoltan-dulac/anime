@@ -247,7 +247,7 @@
     var isSVG = (el instanceof SVGElement);
     
     /*
-     * IE <= 10 has a problem with SVG and CSS transforms, so 
+     * IE has a problem with SVG and CSS transforms, so 
      * we have to work around this.
      */
     var str = isSVG ? el.getAttribute('transform') : el.style.transform
@@ -501,7 +501,7 @@
           transformValue = transforms[t].join(' ');
         
         /*
-         * IE <= 10 has a problem with SVG and CSS transforms, so 
+         * IE has a problem with SVG and CSS transforms, so 
          * we have to work around this.
          */
         if (target instanceof SVGElement) {
