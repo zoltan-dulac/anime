@@ -82,6 +82,8 @@ var animeSMIL = new function () {
 				elPath = el.getAttribute('path'),
 				pathEl = document.createElementNS(svgNS,"path");
 				pathEl.setAttributeNS(null, 'd', elPath);
+				pathEl.setAttributeNS(null, 'fill', 'transparent');
+				
 				
 				rootSVG.appendChild(pathEl);
 				r = anime.path(pathEl)
@@ -96,7 +98,7 @@ var animeSMIL = new function () {
 	};
 	
 	function isDuration(s) {
-		return s.match(REs.sec) || s.match(REs.ms)
+		return s.match(REs.sec) || s.match(REs.ms) || s.trim() === '';
 	}
 	
 	function getStandardConfigs(el) {
@@ -111,16 +113,50 @@ var animeSMIL = new function () {
 			for (i=0; i<beginList.length; i++) {
 				var begin = beginList[i];
 				console.log(begin);
+				
+				/*
+				 * If this begin value is actual amount of time,
+				 * then add the time to the anime config object.
+				 * Otherwise, we need to add the `beginEvent` and
+				 * `beginEventTarget` properties to it (which are
+				 * not properties of anime) so `createAnimeCall`
+				 * can set the events.
+				 */
 				if (isDuration(begin)) {
+					console.log('isDuration');
 					begin = getDuration(begin);
 				} else {
+					console.log('m;')
 					// otherwise, it's an event.
 					beginEvent = begin.split('.');
 					
 					if (beginEvent.length === 2) {
-						beginEventTarget = beginEvent[0];
+						beginEventTarget = document.getElementById(beginEvent[0]);
 						beginEvent = beginEvent[1];
+					} else if (beginEvent.length === 1){
+						beginEventTarget = target;
+						beginEvent = beginEvent[0];
 					}
+					
+					console.log(beginEventTarget.nodeName, beginEvent)
+					/* 
+					 * If the target doesn't exist, we won't
+					 * bother setting the event.
+					 */
+					if (beginEventTarget) {
+						switch (beginEventTarget.nodeName) {
+							case 'animate':
+							case 'animateMotion':
+								beginEvent = 'animeSMIL:' + beginEvent
+								break;
+							default:
+								beginEvent = beginEvent;
+						}
+						
+					} else {
+						beginEvent = undefined;
+					}
+					
 					begin = undefined;
 				}
 				r.push({
@@ -146,14 +182,32 @@ var animeSMIL = new function () {
 	}
 	
 	function completeEvent(el) {
-		console.log(el);
-		var event = document.createEvent('Event')
+		var event = document.createEvent('Event');
 		event.initEvent('animeSMIL:end', true, true);
 		el.dispatchEvent(event);
 	}
 	
 	function createAnimeCall(config) {
-		anime(config);
+		if (config.beginEvent) {
+			var target = config.target,
+				SMILfromValues = config.SMILfromValues;
+				
+				/*
+				 * TODO : do we have to cancel this event if it's fired again before it ends?
+				 */
+				config.beginEventTarget.addEventListener(config.beginEvent, function (e) {
+					var target = e.target;
+					console.log('fire');
+					
+					for (i in SMILfromValues) {
+						target.setAttribute(i, SMILfromValues[i]);
+					}
+					
+					anime(config);
+				});
+		} else {
+			anime(config);
+		}
 	}
 	
 	/* SVG TAG DEFINITIONS */
@@ -162,11 +216,45 @@ var animeSMIL = new function () {
 		var target = el.parentNode,
 			attributeName = el.getAttribute('attributeName'),
 			configs = getStandardConfigs(el),
-			i;
+			values = el.getAttribute('values'),
+			from, to, i;
+			
+		if (values) {
+			values = values.trim().split(';')
+		}
+		
+		
+		console.log(values);
+		if (values.length == 2) {
+			from = values[0];
+			to = values[1];
+		} else {
+			from = el.getAttribute('from') || target.getAttribute(attributeName);
+			to = el.getAttribute('to');
+		}
+		
+		console.log('from/to', from, to);
+			
 		for (i=0; i<configs.length; i++) {
 			var config = configs[i];
-			el.setAttributeNS(null, attributeName, el.getAttribute('from'));
-			config[attributeName] = parseFloat(el.getAttribute('to'));
+			
+			if (from) {
+				config.SMILfromValues = {};
+				config.SMILfromValues[attributeName] = from;
+			}
+			
+			if (to) {
+				config.SMILtoValues = {};
+				config.SMILtoValues[attributeName] = to;
+			}
+			
+			target.setAttributeNS(null, attributeName, from);
+			
+			if (isNumeric(to)) {
+				config[attributeName] = parseFloat(to);
+			} else {
+				config[attributeName] = to;
+			}
 			console.log(config);
 			createAnimeCall(config);
 			
@@ -185,7 +273,7 @@ var animeSMIL = new function () {
 		for (i=0; i<configs.length; i++) {
 			var config = configs[i];
 			config.translate = path;
-			config.rotate =  (el.getAttribute('rotate') === 'auto' ? path : undefined);
+			config.rotate =  (el.getAttribute('rotate') === 'auto' ? path : 0);
 			console.log(config.complete);
 			createAnimeCall(config);
 		}

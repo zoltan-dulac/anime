@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html data-smil-js-debug="true">
+  <head>
+    <title>SVG SMIL Animate with Path</title>
+    
+    
+    
+  </head>
+  <body>
+    <svg width="300px" height="100px">
+      <rect x="0" y="0" width="300" height="100" stroke="black" stroke-width="1" />
+      <rect x="0" y="0" width="20" height="20" fill="blue" stroke="black" stroke-width="1">
+        <animateMotion path="M 250,80 H 50 Q 30,80 30,50 Q 30,20 50,20 H 250 Q 280,20,280,50 Q 280,80,250,80Z"
+          dur="3s" repeatCount="indefinite" rotate="auto" from="0" to="100">
+      </rect>
+    </svg>
+    
+    <script src="../../modernizr-custom-smil.js"></script>
+    <script src="../../anime.js"></script>
+    <script src="../../anime-smil.js"></script>
+  </body>
+</html>
