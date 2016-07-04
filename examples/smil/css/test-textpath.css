@@ -1,0 +1,74 @@
+@import "reset.css";
+@import "../fonts/LoungeBait/stylesheet.css";
+
+body {
+  background: black;
+}
+
+#exampleBlurb {
+  margin-bottom: 0;
+}
+
+h1#outside {
+	position: absolute;
+	top: 100px;
+	left: 10px;
+	z-index: 30;
+}
+
+
+
+#headerText {
+	font-family: "LoungeBait";
+	
+	text-anchor: middle;
+	
+	
+	position: relative;
+	
+	top: 10px;
+	
+	font-size: 119px;
+	
+	
+	-ms-transform: translateY(-20px);
+	-webkit-transform: translateY(-20px);
+	transform: translateY(-20px);
+}
+
+
+#leftGlassText, #rightGlassText, #bottomGlassText {
+
+	font-size: 17px; 
+	
+	/* VML will not accept @font-face fonts (!!!) */
+	font-family: "Arial", sans-serif;
+	
+}
+
+
+svg {
+  -webkit-transform: translateZ(0);
+  display: block;
+}
+
+svg, svg text, svg textpath{
+  -webkit-transform: translateZ(0);
+}
+
+#myShape, #shapeContainer {
+	position: absolute;
+	z-index: 10;
+	width: 597px;
+	height: 960px;
+ 
+  overflow: hidden;
+  
+}
+
+#rollerCoasterImage {
+    left: 0px;
+    position: absolute;
+    top: 0;
+    z-index: 1;
+}

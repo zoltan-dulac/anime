@@ -225,7 +225,7 @@ var animeSMIL = new function () {
 		
 		
 		console.log(values);
-		if (values.length == 2) {
+		if (values && values.length == 2) {
 			from = values[0];
 			to = values[1];
 		} else {

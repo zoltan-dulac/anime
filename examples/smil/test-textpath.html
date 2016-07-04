@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html data-smil-js-debug="true">
+	<head>
+		<title>SVG SMIL Animate with Path</title>
+
+		<link rel="stylesheet" type="text/css" href="css/test-textpath.css" />
+
+	</head>
+	<body>
+
+				<svg id="myShape" xmlns="http://www.w3.org/2000/svg"
+				 xmlns:xlink="http://www.w3.org/1999/xlink">
+			<defs>
+				
+				<!-- 
+						Note: the d attribute is the same as the VML shape's path attribute except:
+						
+						1) SVG can take float co-ordinates.	VML cannot.	To be consistant, I round.
+						2) all the numbers are separated by commas, not just the coordinate pairs.
+						3) the 'z' at the end in svg is an 'xe' in VML
+						4) it's better to use a group of straight lines that a group of curves, since
+							 VML doesn't do letter spacing consistantly with a lot of curves.
+				-->
+				<filter id="drop-shadow">
+					<feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blurred"/>
+					<feOffset in="blurred" dx="0" dy="0" result="final_blur"/>
+					<feMerge>
+						<feMergeNode in="final_blur"/>
+						<feMergeNode in="SourceGraphic"/>
+					</feMerge>
+				</filter>
+				<path id="headerPath" class="path"
+					fill="none" stroke="white" stroke-width="1"
+						d="M 27	143 C 190	111	378	122	508	148">
+					 <x-animate dur="1s" repeatCount="1" attributeName="d" 
+						values="M 27  32 C 190  69  378  73  508  21; 
+							M 27	143 C 190	111	378	122	508	148" />
+				</path>
+				
+				<path id="leftGlassPath" class="path"
+					fill="none" stroke="white" stroke-width="1"
+					
+					d="M 5	182 C 201  479  233  478  232  529 L 232  732">
+					 <x-animate dur="1s" repeatCount="1" attributeName="d" 
+						values="
+							M 5  182 C 9  489  9  479  10  537 L 5  732;
+							M 5	182 C 201  479  233  478  232  529 L 232  732" />
+				</path>
+				
+				<path id="rightGlassPath" class="path"
+					fill="none" stroke="white" stroke-width="1"
+					d="M 318  735 L 318  530 C 317  478  329  478  531  183">
+					 <x-animate dur="1s" repeatCount="1" attributeName="d" 
+						values="
+						M 593  719 L 592  533 C 593  476  593  482  588  184; 
+						M 318  735 L 318  530 C 317  478  329  478  531  183" />
+				</path>
+				
+				<path id="bottomGlassPath" class="path"
+					fill="none" stroke="white" stroke-width="1"
+					d="M 153  831 C 215  894  372  878  398  821">
+					 <x-animate dur="1s" repeatCount="1" attributeName="d" 
+						values="M 152  953 C 215  951  377  949  405  949;
+							M 153  831 C 215  894  372  878  398  821" />
+				</path>
+			</defs>
+			<text id="headerText"	fill="white">
+				<textPath class="textpath"	xlink:href="#headerPath" startOffset="50%" > <tspan dy="0.3em">A Perfect Martini!</tspan></textPath>
+				<animate attributeType="XML"
+		                 attributeName="fill"
+		                 from="rgba(255, 255, 255, 0)" to="rgba(255, 255, 255, 1)"
+		                 dur="1s" />
+
+			</text>
+		
+			<text id="leftGlassText" fill="white">
+				<textPath class="textpath"	xlink:href="#leftGlassPath" style="filter:url(#drop-shadow)" startOffset="5%" > <tspan dy="0.3em">
+					A hint of dry vermouth, two shots of gin and stirred &mdash; never, ever shaken.
+					<animate attributeType="XML"
+		                 attributeName="fill"
+		                 from="rgba(255, 255, 255, 0)" to="rgba(255, 255, 255, 1)"
+		                 dur="1s" />
+				</tspan>
+							</textPath>
+		 </text>
+			
+			
+			<text id="rightGlassText" fill="white" >
+				<textPath class="textpath"	xlink:href="#rightGlassPath" style="filter:url(#drop-shadow)" startOffset="5%" > <tspan dy="0.3em">
+					Garnished with a blue cheese olive, a pickled onion, or a twist of lemon.
+					
+				</tspan>
+				<animate attributeType="XML"
+		                 attributeName="fill"
+		                 from="rgba(255, 255, 255, 0)" to="rgba(255, 255, 255, 1)"
+		                 dur="1s" />
+			</textPath>
+		 </text>
+	 
+	 <text id="bottomGlassText" fill="white">
+			<textPath class="textpath"	xlink:href="#bottomGlassPath" style="filter:url(#drop-shadow)" startOffset="5%" > 
+				<tspan dy="0.3em">A drink of refinement and class.</tspan>
+				<animate attributeType="XML"
+		                 attributeName="fill"
+		                 from="rgba(255, 255, 255, 0)" to="rgba(255, 255, 255, 1)"
+		                 dur="1s" />
+			</textPath>
+	 </text>
+			
+	</svg>
+	<img id="martini" src="images/martini2.jpg" />
+		<script src="../../modernizr-custom-smil.js"></script>
+		<script src="../../anime.js"></script>
+		<script src="../../anime-smil.js"></script>
+
+	</body>
+</html>
