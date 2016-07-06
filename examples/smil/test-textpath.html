@@ -32,43 +32,48 @@
 				<path id="headerPath" class="path"
 					fill="none" stroke="white" stroke-width="1"
 						d="M 27	143 C 190	111	378	122	508	148">
-					 <x-animate dur="1s" repeatCount="1" attributeName="d" 
+					 <animate dur="1s" repeatCount="1" attributeName="d" 
 						values="M 27  32 C 190  69  378  73  508  21; 
-							M 27	143 C 190	111	378	122	508	148" />
+							M 27	143 C 190	111	378	122	508	148" 
+							begin="0; myShape.click" />
 				</path>
 				
 				<path id="leftGlassPath" class="path"
 					fill="none" stroke="white" stroke-width="1"
 					
 					d="M 5	182 C 201  479  233  478  232  529 L 232  732">
-					 <x-animate dur="1s" repeatCount="1" attributeName="d" 
+					 <animate dur="1s" repeatCount="1" attributeName="d" 
 						values="
 							M 5  182 C 9  489  9  479  10  537 L 5  732;
-							M 5	182 C 201  479  233  478  232  529 L 232  732" />
+							M 5	182 C 201  479  233  478  232  529 L 232  732" 
+							begin="0; myShape.click"/>
 				</path>
 				
 				<path id="rightGlassPath" class="path"
 					fill="none" stroke="white" stroke-width="1"
 					d="M 318  735 L 318  530 C 317  478  329  478  531  183">
-					 <x-animate dur="1s" repeatCount="1" attributeName="d" 
+					 <animate dur="1s" repeatCount="1" attributeName="d" 
 						values="
 						M 593  719 L 592  533 C 593  476  593  482  588  184; 
-						M 318  735 L 318  530 C 317  478  329  478  531  183" />
+						M 318  735 L 318  530 C 317  478  329  478  531  183" 
+						begin="0; myShape.click" />
 				</path>
 				
 				<path id="bottomGlassPath" class="path"
 					fill="none" stroke="white" stroke-width="1"
 					d="M 153  831 C 215  894  372  878  398  821">
-					 <x-animate dur="1s" repeatCount="1" attributeName="d" 
+					 <animate dur="1s" repeatCount="1" attributeName="d" 
 						values="M 152  953 C 215  951  377  949  405  949;
-							M 153  831 C 215  894  372  878  398  821" />
+							M 153  831 C 215  894  372  878  398  821" 
+							begin="0; myShape.click" />
 				</path>
 			</defs>
 			<text id="headerText"	fill="white">
 				<textPath class="textpath"	xlink:href="#headerPath" startOffset="50%" > <tspan dy="0.3em">A Perfect Martini!</tspan></textPath>
 				<animate attributeType="XML"
-		                 attributeName="fill"
-		                 from="rgba(255, 255, 255, 0)" to="rgba(255, 255, 255, 1)"
+		                 attributeName="opacity"
+		                 values="0; 1"
+		                 begin="0; myShape.click"
 		                 dur="1s" />
 
 			</text>
@@ -76,12 +81,14 @@
 			<text id="leftGlassText" fill="white">
 				<textPath class="textpath"	xlink:href="#leftGlassPath" style="filter:url(#drop-shadow)" startOffset="5%" > <tspan dy="0.3em">
 					A hint of dry vermouth, two shots of gin and stirred &mdash; never, ever shaken.
-					<animate attributeType="XML"
-		                 attributeName="fill"
-		                 from="rgba(255, 255, 255, 0)" to="rgba(255, 255, 255, 1)"
-		                 dur="1s" />
+					
 				</tspan>
-							</textPath>
+				</textPath>
+				<animate attributeType="XML"
+		                 attributeName="opacity"
+		                 from="0" to="1"
+		                 begin="0; myShape.click"
+		                 dur="1s" />
 		 </text>
 			
 			
@@ -90,21 +97,25 @@
 					Garnished with a blue cheese olive, a pickled onion, or a twist of lemon.
 					
 				</tspan>
-				<animate attributeType="XML"
-		                 attributeName="fill"
-		                 from="rgba(255, 255, 255, 0)" to="rgba(255, 255, 255, 1)"
-		                 dur="1s" />
+				
 			</textPath>
+			<animate attributeType="XML"
+		                 attributeName="opacity"
+		                 from="0" to="1"
+		                 begin="0; myShape.click"
+		                 dur="1s" />
 		 </text>
 	 
 	 <text id="bottomGlassText" fill="white">
 			<textPath class="textpath"	xlink:href="#bottomGlassPath" style="filter:url(#drop-shadow)" startOffset="5%" > 
 				<tspan dy="0.3em">A drink of refinement and class.</tspan>
-				<animate attributeType="XML"
-		                 attributeName="fill"
-		                 from="rgba(255, 255, 255, 0)" to="rgba(255, 255, 255, 1)"
-		                 dur="1s" />
+				
 			</textPath>
+			<animate attributeType="XML"
+		                 attributeName="opacity"
+		                 from="0" to="1"
+		                 begin="0; myShape.click"
+		                 dur="1s" />
 	 </text>
 			
 	</svg>

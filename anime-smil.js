@@ -3,7 +3,8 @@ var animeSMIL = new function () {
 	var els = {},
 		REs = {
 			sec: /([0-9]+)s/,
-			ms: /([0-9]+)ms/
+			ms: /([0-9]+)ms/,
+			listSeparator: /\s*;\s*/
 		},
 		svgNS = "http://www.w3.org/2000/svg",
 		events = {
@@ -98,7 +99,7 @@ var animeSMIL = new function () {
 	};
 	
 	function isDuration(s) {
-		return s.match(REs.sec) || s.match(REs.ms) || s.trim() === '';
+		return s.match(REs.sec) || s.match(REs.ms) || s.trim() === '' || s === "0";
 	}
 	
 	function getStandardConfigs(el) {
@@ -108,7 +109,7 @@ var animeSMIL = new function () {
 			beginEvent, beginEventTarget,
 			i, r = [];
 			
-			beginList = begin.split(';');
+			beginList = begin.split(REs.listSeparator);
 			
 			for (i=0; i<beginList.length; i++) {
 				var begin = beginList[i];
@@ -122,12 +123,13 @@ var animeSMIL = new function () {
 				 * not properties of anime) so `createAnimeCall`
 				 * can set the events.
 				 */
+				console.log('begin, ', begin);
 				if (isDuration(begin)) {
 					console.log('isDuration');
 					begin = getDuration(begin);
 				} else {
-					console.log('m;')
 					// otherwise, it's an event.
+					console.log('is event');
 					beginEvent = begin.split('.');
 					
 					if (beginEvent.length === 2) {
@@ -137,7 +139,6 @@ var animeSMIL = new function () {
 						beginEventTarget = target;
 						beginEvent = beginEvent[0];
 					}
-					
 					console.log(beginEventTarget.nodeName, beginEvent)
 					/* 
 					 * If the target doesn't exist, we won't
@@ -160,7 +161,9 @@ var animeSMIL = new function () {
 					begin = undefined;
 				}
 				r.push({
-					id: id,
+					SMIL: {
+						id: id
+					},
 				  targets: target,
 				  duration: (getDuration(el.getAttribute('dur')) || 0),
 				  loop: (el.getAttribute('repeatCount') === 'indefinite'),
@@ -189,18 +192,23 @@ var animeSMIL = new function () {
 	
 	function createAnimeCall(config) {
 		if (config.beginEvent) {
-			var target = config.target,
-				SMILfromValues = config.SMILfromValues;
-				
+			var target = config.targets,
+				SMILfromValues = config.SMIL.fromValues;
+				console.log('from values: ', SMILfromValues);
+				console.log(target);
 				/*
 				 * TODO : do we have to cancel this event if it's fired again before it ends?
 				 */
 				config.beginEventTarget.addEventListener(config.beginEvent, function (e) {
-					var target = e.target;
 					console.log('fire');
 					
 					for (i in SMILfromValues) {
+						console.log('setting ', i, ' to ', SMILfromValues[i]);
+						console.log(target);
 						target.setAttribute(i, SMILfromValues[i]);
+						if (target.style[i] !== undefined) {
+							target.style[i] = "";
+						}
 					}
 					
 					anime(config);
@@ -214,13 +222,13 @@ var animeSMIL = new function () {
 	
 	function animate(el) {
 		var target = el.parentNode,
-			attributeName = el.getAttribute('attributeName'),
+			attributeName = el.getAttribute('attributeName').trim(),
 			configs = getStandardConfigs(el),
 			values = el.getAttribute('values'),
 			from, to, i;
 			
 		if (values) {
-			values = values.trim().split(';')
+			values = values.trim().split(REs.listSeparator)
 		}
 		
 		
@@ -239,13 +247,13 @@ var animeSMIL = new function () {
 			var config = configs[i];
 			
 			if (from) {
-				config.SMILfromValues = {};
-				config.SMILfromValues[attributeName] = from;
+				config.SMIL.fromValues = {};
+				config.SMIL.fromValues[attributeName] = from;
 			}
 			
 			if (to) {
-				config.SMILtoValues = {};
-				config.SMILtoValues[attributeName] = to;
+				config.SMIL.toValues = {};
+				config.SMIL.toValues[attributeName] = to;
 			}
 			
 			target.setAttributeNS(null, attributeName, from);
