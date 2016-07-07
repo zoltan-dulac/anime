@@ -129,26 +129,31 @@ var animeSMIL = new function () {
 			}
 			
 			values = values.trim();
+			console.log(el);
 			
 			for (i=0; i<beginList.length; i++) {
 				var begin = beginList[i];
 				
 				for (j=0; j<keySplinesList.length; j++) {
 					var keyTime = keyTimesList[j],
+						keyTimeDurationPercentage = parseFloat(keyTimesList[j+1]) - keyTime,
 						keySpline = keySplinesList[j],
 						keyTimeDelayOffset = keyTime * duration,
 						fromValues = {}, toValues = {},
 						SMILBegin;
 						
-						if (values && valuesList.length == 2) {
+						if (values && valuesList.length >= j+2) {
 							console.log('from values list');
-							from = valuesList[0];
-							to = valuesList[1];
+							from = valuesList[j];
+							to = valuesList[j+1];
 						} else {
 							console.log('from from to attrs');
 							from = el.getAttribute('from') || target.getAttribute(attributeName);
 							to = el.getAttribute('to');
 						}
+						
+						keyTimeDuration = duration * keyTimeDurationPercentage;
+						console.log('keyTimeDurationPercentage: ' + keyTimeDurationPercentage + 'duration: ' + duration);
 						
 						if (from) {
 							fromValues[attributeName] = from;
@@ -209,7 +214,7 @@ var animeSMIL = new function () {
 							toValues: toValues
 						},
 					  targets: target,
-					  duration: duration || 0,
+					  duration: keyTimeDuration || 0,
 					  loop: (el.getAttribute('repeatCount') === 'indefinite'),
 					  easing: (el.getAttribute('easing') || 'linear'),
 					  delay: delay + keyTimeDelayOffset,
